@@ -91,6 +91,6 @@ fun QuotesListItem(quote: Quote, onClick : () -> Unit) {
     }
 }
 
-fun showToast(context: Context, msg: String) {
-    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+fun Context.showToast(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }

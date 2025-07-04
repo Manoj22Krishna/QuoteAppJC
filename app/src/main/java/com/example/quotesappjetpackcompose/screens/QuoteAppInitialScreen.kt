@@ -1,6 +1,5 @@
 package com.example.quotesappjetpackcompose.screens
 
-import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,9 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.quotesappjetpackcompose.DataManager
+import com.example.quotesappjetpackcompose.model.Quote
 
 @Composable
-fun QuoteAppInitialScreen(context: Context) {
+fun QuoteAppInitialScreen(onClick: (quote: Quote, pos: Int) -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -26,15 +26,7 @@ fun QuoteAppInitialScreen(context: Context) {
             style = MaterialTheme.typography.headlineLarge,
             color = Color.Cyan
         )
-        QuoteList(data = DataManager.data) { it, index ->
-            showToast(context, it.author)
-            if(index == 2) {
-                showToast(context, "position: ${it.quote}")
-            }
-            if(it.author.equals("Albert einstein", true)) {
-                showToast(context,"You have selected ${it.author.lowercase().split(" ").joinToString { it.replaceFirstChar { it.uppercaseChar() }}}. I think u like him")
-            }
-        }
+        QuoteList(data = DataManager.data, onClick)
     }
 }
 
