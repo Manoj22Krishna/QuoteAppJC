@@ -1,20 +1,31 @@
 package com.example.quoteappjc
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import android.provider.ContactsContract.Data
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.lifecycle.lifecycleScope
+import com.example.quotesappjetpackcompose.DataManager
+import com.example.quotesappjetpackcompose.screens.LoadingScreen
+import com.example.quotesappjetpackcompose.screens.QuoteAppInitialScreen
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        lifecycleScope.launch {
+            delay(3000)
+            DataManager.loadAssetsFromFile(applicationContext)
+        }
+        setContent {
+            if (DataManager.isDataLoaded.value) {
+                QuoteAppInitialScreen(this)
+            } else {
+                LoadingScreen()
+            }
         }
     }
+
 }
